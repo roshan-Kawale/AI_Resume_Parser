@@ -86,37 +86,33 @@ export async function searchCandidates(query: string, topK: number = 3) {
 }
 
 
-// export async function updateCandidateStatus(
-//   candidateId: string,
-//   status: "new" | "shortlisted" | "rejected"
-// ) {
-//   const client = await getPineconeClient();
-//   const index = client.Index("candidates");
+export async function updateCandidateStatus(
+  candidateId: string,
+  status: "new" | "shortlisted" | "rejected"
+) {
+  const client = await getPineconeClient();
+  const index = client.Index("candidates");
 
-//   // Fetch current vector
-//   const queryResponse = await index.fetch({
-//     ids: [candidateId],
-//   });
+  // Fetch current vector
+  // const queryResponse = await index.fetch({
+  //   ids: [candidateId],
+  // });
 
-//   const currentVector = queryResponse.vectors[candidateId];
-//   if (!currentVector) {
-//     throw new Error("Candidate not found");
-//   }
+  // const currentVector = queryResponse.vectors[candidateId];
+  // if (!currentVector) {
+  //   throw new Error("Candidate not found");
+  // }
 
-//   // Update metadata with new status
-//   await index.upsert({
-//     upsertRequest: {
-//       vectors: [
-//         {
-//           id: candidateId,
-//           values: currentVector.values,
-//           metadata: {
-//             ...currentVector.metadata,
-//             status,
-//             updatedAt: new Date().toISOString(),
-//           },
-//         },
-//       ],
-//     },
-//   });
-// }
+  // Update metadata with new status
+  await index.upsert([
+        {
+          id: candidateId,
+          values: [], //currentVector.values
+          metadata: {
+            // ...currentVector.metadata,
+            status,
+            updatedAt: new Date().toISOString(),
+          },
+        },
+      ]);
+}

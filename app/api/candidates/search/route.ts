@@ -1,11 +1,11 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { searchCandidates } from "@/lib/utils/pinecone";
 import { generateCandidateSummary } from "@/lib/utils/gemini";
 
 export async function GET(req: NextRequest) {
   try {
-    const searchParams = new URL(req.url).searchParams;
-    const query = searchParams.get("q");
+    const query = req.nextUrl.searchParams.get("q");
 
     if (!query) {
       return NextResponse.json(

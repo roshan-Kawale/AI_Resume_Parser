@@ -8,18 +8,25 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Card } from "@/components/ui/card";
 import { Upload, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { ToastContainer, toast } from 'react-toastify';
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   linkedinUrl: z.string().url("Invalid LinkedIn URL"),
-  skills: z.string().min(1, "Please enter your skills"),
-  experience: z.string().min(1, "Please describe your experience"),
-  education: z.string().min(1, "Please enter your education details"),
+  // skills: z.string().min(1, "Please enter your skills"),
+  // experience: z.string().min(1, "Please describe your experience"),
+  // education: z.string().min(1, "Please enter your education details"),
 });
 
 export default function ApplyPage() {
@@ -32,9 +39,9 @@ export default function ApplyPage() {
       name: "",
       email: "",
       linkedinUrl: "",
-      skills: "",
-      experience: "",
-      education: "",
+      // skills: "",
+      // experience: "",
+      // education: "",
     },
   });
 
@@ -63,12 +70,12 @@ export default function ApplyPage() {
         formData.append(key, value);
       });
 
+      console.log("FormData:", Array.from(formData.entries()));
+
       const response = await fetch("/api/candidates/apply", {
         method: "POST",
         body: formData,
       });
-
-      console.log(formData);
 
       if (!response.ok) {
         throw new Error("Failed to submit application");
@@ -118,7 +125,11 @@ export default function ApplyPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john@example.com" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="john@example.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -132,7 +143,10 @@ export default function ApplyPage() {
                   <FormItem>
                     <FormLabel>LinkedIn Profile URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://linkedin.com/in/johndoe" {...field} />
+                      <Input
+                        placeholder="https://linkedin.com/in/johndoe"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +156,11 @@ export default function ApplyPage() {
               <div
                 {...getRootProps()}
                 className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-                  ${isDragActive ? "border-primary bg-primary/5" : "border-gray-300 hover:border-primary"}`}
+                  ${
+                    isDragActive
+                      ? "border-primary bg-primary/5"
+                      : "border-gray-300 hover:border-primary"
+                  }`}
               >
                 <input {...getInputProps()} />
                 <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
@@ -153,61 +171,12 @@ export default function ApplyPage() {
                     <p className="text-sm text-gray-600">
                       Drag & drop your resume here, or click to select
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">PDF only, max 5MB</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      PDF only, max 5MB
+                    </p>
                   </div>
                 )}
               </div>
-
-              <FormField
-                control={form.control}
-                name="skills"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Skills</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="List your key skills (e.g., JavaScript, React, Node.js)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="experience"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Work Experience</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe your relevant work experience"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="education"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Education</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter your educational background"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
@@ -219,6 +188,7 @@ export default function ApplyPage() {
                   "Submit Application"
                 )}
               </Button>
+              <ToastContainer />
             </form>
           </Form>
         </Card>

@@ -7,10 +7,26 @@ export interface Candidate {
   experience: string;
   education: string;
   resumeText: string;
+  // relevanceScore?: number;
+  // aiSummary?: string;
+  // missingSkills?: string[];
+  // status?: 'new' | 'shortlisted' | 'rejected';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CandidateWithAiEvaluation {
+  id: string;
+  name: string;
+  email: string;
+  linkedinUrl: string;
+  skills: string[];
+  experience: string;
+  education: string;
+  resumeText: string;
   relevanceScore?: number;
   aiSummary?: string;
   missingSkills?: string[];
-  status?: 'new' | 'shortlisted' | 'rejected';
   createdAt?: string;
   updatedAt?: string;
 }
